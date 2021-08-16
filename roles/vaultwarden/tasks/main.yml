@@ -1,0 +1,63 @@
+---
+
+- name: create '{{ vaultwarden_user }}' user
+  ansible.builtin.user:
+    name: "{{ vaultwarden_user }}"
+    shell: /sbin/nologin
+    home: /var/lib/{{ vaultwarden_user }}
+  become: true
+
+- name: create data and settings directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_user }}"
+    state: directory
+  with_items:
+    - "{{ vaultwarden_data }}"
+    - "{{ vaultwarden_etc }}"
+  become: true
+
+- name: configure vaultwarden
+  ansible.builtin.template:
+    src: settings.sh.j2
+    dest: "{{ vaultwarden_etc }}/00-settings.sh"
+    owner: "{{ vaultwarden_user }}"
+    group: "{{ vaultwarden_user }}"
+    validate: bash %s
+  become: true
+
+- name: generate vaultwarden systemd service unit
+  ansible.builtin.template:
+    src: container-systemd.service.j2
+    dest: /usr/lib/systemd/system/{{ vaultwarden_service_name }}.service
+  vars:
+    user: "{{ vaultwarden_user }}"
+    args:
+      --name vaultwarden
+      --volume {{ vaultwarden_data }}:/data/
+      --volume {{ vaultwarden_etc }}:/etc/vaultwarden.d/
+      --publish {{ vaultwarden_host }}:{{ vaultwarden_port }}:80
+      --publish {{ vaultwarden_host }}:{{ vaultwarden_ws_port }}:3012
+      {{ vaultwarden_image }}
+  become: true
+
+- name: start vaultwarden now and on every reboot
+  ansible.builtin.systemd:
+    name: "{{ vaultwarden_service_name }}.service"
+    enabled: true
+    state: restarted
+    daemon_reload: true
+  become: true
+
+- name: add reverse proxy entry to caddy
+  include_role:
+    name: caddy
+    tasks_from: add-reverse-proxy
+    apply:
+      delegate_to: "{{ item }}"
+  vars:
+    domain: "{{ vaultwarden_domain }}"
+    upstream_host: "{{ vaultwarden_host }}"
+    upstream_port: "{{ vaultwarden_port }}"
+  with_items: "{{ groups['reverseproxies'] }}"

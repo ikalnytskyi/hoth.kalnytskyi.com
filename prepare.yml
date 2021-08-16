@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  vars:
+    deploy_user: ansible
+    deploy_ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDB+tirdqcxW1GaQBOTUYVEcYqoZuJPPbY/eUFa5Sof8 gh-action@aux.kalnytskyi.com
+  tasks:
+    - name: install 'sudo' package
+      ansible.builtin.package:
+        name: sudo
+        state: present
+
+    - name: create '{{ deploy_user }}' user
+      ansible.builtin.user:
+        name: "{{ deploy_user }}"
+        home: /var/lib/{{ deploy_user }}
+
+    - name: make '{{ deploy_user }}' a passwordless sudo user
+      ansible.builtin.copy:
+        dest: /etc/sudoers.d/00-ansible-user
+        content: ansible ALL=(ALL) NOPASSWD:ALL
+
+    - name: setup authorized key for '{{ deploy_user }}' user
+      ansible.builtin.authorized_key:
+        user: "{{ deploy_user }}"
+        key: "{{ deploy_ssh_key }}"
+        state: present

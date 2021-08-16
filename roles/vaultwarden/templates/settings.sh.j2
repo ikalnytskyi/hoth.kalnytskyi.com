@@ -1,0 +1,3 @@
+{% for k, v in vaultwarden_env_settings.items() %}
+export {{ k }}="{{ v }}"
+{% endfor %}

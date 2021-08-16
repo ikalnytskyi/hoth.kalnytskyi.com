@@ -1,0 +1,20 @@
+---
+
+argument_specs:
+  add-reverse-proxy:
+    options:
+      domain:
+        type: str
+        required: true
+        description: |
+          The domain to proxy requests from to the upstream.
+      upstream_host:
+        type: str
+        required: true
+        description: |
+          The upstream host to proxy requests to.
+      upstream_port:
+        type: int
+        required: true
+        description: |
+          The upstream port to proxy requests to.

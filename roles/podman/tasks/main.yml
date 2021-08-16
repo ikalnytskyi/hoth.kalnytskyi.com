@@ -1,0 +1,59 @@
+---
+
+- name: update apt cache if needed
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  become: true
+
+- name: install apt prerequisite packages
+  ansible.builtin.apt:
+    name: "{{ podman_apt_prerequisite_packages }}"
+    state: present
+  become: true
+
+- name: add podman apt repo signing key
+  ansible.builtin.apt_key:
+    url: "{{ podman_apt_repo_gpg }}"
+    state: present
+  become: true
+
+- name: add podman apt repo
+  ansible.builtin.apt_repository:
+    repo: "{{ podman_apt_repo_src }}"
+    state: present
+    filename: podman
+  become: true
+
+- name: install podman
+  ansible.builtin.apt:
+    name: podman
+    state: present
+  become: true
+
+- name: check if cgroups v2 are enabled
+  ansible.builtin.stat:
+    path: /sys/fs/cgroup/cgroup.controllers
+  register: cgroups
+
+- name: check if cgroups v2 are enabled
+  ansible.builtin.set_fact:
+    cgroupsv2: "{{ cgroups.stat.isreg is defined and cgroups.stat.isreg }}"
+
+- block:
+  - name: update grub configuration to enable cgroups v2
+    ansible.builtin.lineinfile:
+      path: /etc/default/grub
+      regexp: '^GRUB_CMDLINE_LINUX="(.*)"$'
+      line: 'GRUB_CMDLINE_LINUX="\1 systemd.unified_cgroup_hierarchy=1"'
+      backrefs: yes
+      state: present
+    become: true
+
+  - ansible.builtin.command: update-grub
+    become: true
+
+  - name: reboot the machine to apply the grub config changes
+    ansible.builtin.reboot:
+    become: true
+  when: not cgroupsv2 and podman_require_cgroupsv2

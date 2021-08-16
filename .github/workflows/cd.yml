@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: vm.kalnytskyi.com
+    concurrency: vm.kalnytskyi.com
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install ansible
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade ansible
+
+      - name: Deploy
+        env:
+          DEPLOY_SSH_PRIVATE_KEY_PATH: ${{ runner.temp }}/id_ed25519
+          VAULTWARDEN_SMTP_PASSWORD: ${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}
+        run: |
+          echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ${DEPLOY_SSH_PRIVATE_KEY_PATH}
+          chmod 0600 ${DEPLOY_SSH_PRIVATE_KEY_PATH}
+
+          ansible-playbook \
+            -vv \
+            --private-key ${DEPLOY_SSH_PRIVATE_KEY_PATH} \
+            --inventory inventory \
+            setup.yml
