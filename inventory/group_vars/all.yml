@@ -1,0 +1,8 @@
+---
+
+caddy_confd_path: /etc/caddy/conf.d
+
+vaultwarden_domain: vault.kalnytskyi.com
+vaultwarden_host: 127.0.0.1
+vaultwarden_port: 5000
+vaultwarden_ws_port: 5001

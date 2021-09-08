@@ -1,0 +1,9 @@
+---
+
+- name: render vaultwarden caddy configuration
+  ansible.builtin.template:
+    src: vaultwarden.caddy.j2
+    dest: "{{ (caddy_confd_path, 'vaultwarden.caddy') | path_join }}"
+  notify: reload-caddy
+  when: "{{ groups['vaultwardens'] }}"
+  become: true

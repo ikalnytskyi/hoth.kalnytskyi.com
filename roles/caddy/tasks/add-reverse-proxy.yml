@@ -1,8 +1,0 @@
----
-
-- name: configure caddy to serve virtual hosts from multiple files
-  ansible.builtin.template:
-    src: caddy-reverse-proxy.caddy.j2
-    dest: "{{ (caddy_confd_path, domain + '.caddy') | path_join }}"
-  notify: reload-caddy
-  become: true

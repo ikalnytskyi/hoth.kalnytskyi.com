@@ -1,0 +1,11 @@
+{{ vaultwarden_domain }} {
+  encode gzip
+
+  reverse_proxy /notifications/hub/negotiate {{ vaultwarden_host }}:{{vaultwarden_port }}
+  reverse_proxy /notifications/hub {{ vaultwarden_host }}:{{ vaultwarden_ws_port }}
+  reverse_proxy {{ vaultwarden_host }}:{{ vaultwarden_port }} {
+     # Passing correct remote IP address down to Vaultwarden so the latter
+     # can correctly ban by IP.
+     header_up X-Real-IP {remote_host}
+  }
+}

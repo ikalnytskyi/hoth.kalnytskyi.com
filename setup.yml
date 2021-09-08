@@ -1,9 +1,10 @@
 ---
 
-- hosts: reverseproxies
-  roles:
-    - role: caddy
-
 - hosts: vaultwardens
   roles:
     - role: vaultwarden
+
+- hosts: reverseproxies
+  roles:
+    - role: caddy
+    - role: caddy_confd
