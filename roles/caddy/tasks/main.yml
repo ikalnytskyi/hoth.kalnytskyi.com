@@ -38,9 +38,9 @@
     dest: /etc/caddy/Caddyfile
   become: true
 
-- name: create caddy.d directory to store virtual hosts
+- name: create conf.d directory to store virtual hosts
   ansible.builtin.file:
-    path: "{{ caddy_caddyd_path }}"
+    path: "{{ caddy_confd_path }}"
     state: directory
   become: true
 
