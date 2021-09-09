@@ -43,7 +43,7 @@
   ansible.builtin.file:
     path: "{{ caddy_confd_path }}"
     state: directory
-    mode: 0644
+    mode: 0755
   become: true
 
 - name: start caddy now and on every reboot
