@@ -12,6 +12,7 @@
     path: "{{ item }}"
     owner: "{{ vaultwarden_user }}"
     group: "{{ vaultwarden_user }}"
+    mode: 0600
     state: directory
   with_items:
     - "{{ vaultwarden_data }}"
@@ -24,6 +25,7 @@
     dest: "{{ vaultwarden_etc }}/00-settings.sh"
     owner: "{{ vaultwarden_user }}"
     group: "{{ vaultwarden_user }}"
+    mode: 0600
     validate: bash %s
   become: true
 
@@ -31,6 +33,7 @@
   ansible.builtin.template:
     src: container-systemd.service.j2
     dest: /usr/lib/systemd/system/{{ vaultwarden_service_name }}.service
+    mode: 0644
   vars:
     user: "{{ vaultwarden_user }}"
     args:
