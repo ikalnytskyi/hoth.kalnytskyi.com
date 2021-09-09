@@ -36,12 +36,14 @@
   ansible.builtin.template:
     src: caddyfile.j2
     dest: /etc/caddy/Caddyfile
+    mode: 0644
   become: true
 
 - name: create conf.d directory to store virtual hosts
   ansible.builtin.file:
     path: "{{ caddy_confd_path }}"
     state: directory
+    mode: 0644
   become: true
 
 - name: start caddy now and on every reboot

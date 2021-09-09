@@ -41,19 +41,20 @@
     cgroupsv2: "{{ cgroups.stat.isreg is defined and cgroups.stat.isreg }}"
 
 - block:
-  - name: update grub configuration to enable cgroups v2
-    ansible.builtin.lineinfile:
-      path: /etc/default/grub
-      regexp: '^GRUB_CMDLINE_LINUX="(.*)"$'
-      line: 'GRUB_CMDLINE_LINUX="\1 systemd.unified_cgroup_hierarchy=1"'
-      backrefs: yes
-      state: present
-    become: true
+    - name: update grub configuration template to enable cgroups v2
+      ansible.builtin.lineinfile:
+        path: /etc/default/grub
+        regexp: '^GRUB_CMDLINE_LINUX="(.*)"$'
+        line: 'GRUB_CMDLINE_LINUX="\1 systemd.unified_cgroup_hierarchy=1"'
+        backrefs: true
+        state: present
+      become: true
 
-  - ansible.builtin.command: update-grub
-    become: true
+    - name: update grub configuration
+      ansible.builtin.command: update-grub
+      become: true
 
-  - name: reboot the machine to apply the grub config changes
-    ansible.builtin.reboot:
-    become: true
+    - name: reboot the machine to apply the grub config changes
+      ansible.builtin.reboot:
+      become: true
   when: not cgroupsv2 and podman_require_cgroupsv2
