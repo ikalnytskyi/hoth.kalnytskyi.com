@@ -28,6 +28,9 @@ jobs:
           echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ${DEPLOY_SSH_PRIVATE_KEY_PATH}
           chmod 0600 ${DEPLOY_SSH_PRIVATE_KEY_PATH}
 
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+
           ansible-playbook \
             -vv \
             --private-key ${DEPLOY_SSH_PRIVATE_KEY_PATH} \
