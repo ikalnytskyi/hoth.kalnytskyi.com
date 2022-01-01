@@ -24,6 +24,8 @@ jobs:
         env:
           DEPLOY_SSH_PRIVATE_KEY_PATH: ${{ runner.temp }}/id_ed25519
           VAULTWARDEN_SMTP_PASSWORD: ${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}
+          VAULTWARDEN_YUBICO_CLIENT_ID: ${{ secrets.VAULTWARDEN_YUBICO_CLIENT_ID }}
+          VAULTWARDEN_YUBICO_SECRET_KEY: ${{ secrets.VAULTWARDEN_YUBICO_SECRET_KEY }}
         run: |
           echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ${DEPLOY_SSH_PRIVATE_KEY_PATH}
           chmod 0600 ${DEPLOY_SSH_PRIVATE_KEY_PATH}
