@@ -1,5 +1,11 @@
 {{ vaultwarden_domain }} {
-  encode gzip
+  encode gzip zstd
+  log
+
+  header {
+    Strict-Transport-Security "max-age=31536000"
+    X-Robots-Tag "none"
+  }
 
   reverse_proxy /notifications/hub/negotiate {{ vaultwarden_host }}:{{vaultwarden_port }}
   reverse_proxy /notifications/hub {{ vaultwarden_host }}:{{ vaultwarden_ws_port }}

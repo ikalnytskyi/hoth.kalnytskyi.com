@@ -1,6 +1,7 @@
 ---
 
 caddy_confd_path: /etc/caddy/conf.d
+caddy_email: ihor@kalnytskyi.com
 
 vaultwarden_domain: vault.kalnytskyi.com
 vaultwarden_host: 127.0.0.1
