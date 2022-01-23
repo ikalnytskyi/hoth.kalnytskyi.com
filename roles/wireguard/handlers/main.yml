@@ -1,0 +1,7 @@
+---
+
+- name: wireguard-systemd-networkd-restart
+  ansible.builtin.systemd:
+    name: systemd-networkd.service
+    state: restarted
+  become: true

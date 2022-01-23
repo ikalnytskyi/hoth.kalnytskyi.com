@@ -1,0 +1,12 @@
+---
+
+wireguard_peers:
+  # yavin
+  - public_key: NK6M8U3ET3QZv2VKBO2pi14FYDuttlTLikMu6Zr8kkY=
+    ip_address: 10.0.0.5
+  # endor
+  - public_key: BGGnQMtWct0TQlCa+tT8X/fBOH7wHXG2ExEZcRoDvBE=
+    ip_address: 10.0.0.10
+  # lotrienlaptop
+  - public_key: p+ea9a02hrqaRo+lCVO6XerTudT7iBDnCBwKAI+yA3E=
+    ip_address: 10.0.0.20

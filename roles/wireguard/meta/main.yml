@@ -1,0 +1,32 @@
+---
+
+argument_specs:
+  main:
+    options:
+      wireguard_private_key:
+        type: str
+        required: true
+        description: |
+          The private key of the wireguard server.
+      wireguard_device_name:
+        type: str
+        default: wg0
+        description: |
+          The name of the network device to be created for the wireguard tunnel.
+      wireguard_device_address:
+        type: str
+        default: 10.0.0.1/24
+        description: |
+          The VPN address of the server with optional network prefix.
+      wireguard_port:
+        type: int
+        default: 51820
+        description: |
+          The port to listen VPN connections on.
+      wireguard_peers:
+        type: list
+        default: []
+        description: |
+          The list of wireguard peers to setup. Each item must posses at least
+          two properties: 'public_key' and 'ip_address'. The 'ip_address' must
+          be aligned with the network specified in 'wireguard_device_address'.
