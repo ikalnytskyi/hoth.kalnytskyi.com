@@ -6,5 +6,4 @@
     dest: "{{ (caddy_confd_path, 'vaultwarden.caddy') | path_join }}"
     mode: 0644
   notify: reload-caddy
-  when: groups['vaultwardens']
   become: true
