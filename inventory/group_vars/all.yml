@@ -7,3 +7,31 @@ vaultwarden_domain: vault.kalnytskyi.com
 vaultwarden_host: 127.0.0.1
 vaultwarden_port: 5000
 vaultwarden_ws_port: 5001
+vaultwarden_data: /mnt/data/vaultwarden
+vaultwarden_env_settings:
+  DOMAIN: https://{{ vaultwarden_domain }}
+  INVITATION_ORG_NAME: The Vault
+  SIGNUPS_ALLOWED: false
+  SIGNUPS_VERIFY: true
+  WEBSOCKET_ENABLED: true
+  SMTP_USERNAME: vault@m.kalnytskyi.com
+  SMTP_PASSWORD: "{{ lookup('env', 'VAULTWARDEN_SMTP_PASSWORD') }}"
+  SMTP_HOST: smtp.eu.mailgun.org
+  SMTP_FROM: vault@kalnytskyi.com
+  SMTP_FROM_NAME: The Vault
+  SMTP_PORT: 587
+  YUBICO_CLIENT_ID: "{{ lookup('env', 'VAULTWARDEN_YUBICO_CLIENT_ID') }}"
+  YUBICO_SECRET_KEY: "{{ lookup('env', 'VAULTWARDEN_YUBICO_SECRET_KEY') }}"
+  ROCKET_CLI_COLORS: false
+  ROCKET_WORKERS: 5
+
+wireguard_peers:
+  - public_key: NK6M8U3ET3QZv2VKBO2pi14FYDuttlTLikMu6Zr8kkY=
+    ip_address: 10.0.0.5
+    comment: yavin
+  - public_key: BGGnQMtWct0TQlCa+tT8X/fBOH7wHXG2ExEZcRoDvBE=
+    ip_address: 10.0.0.10
+    comment: endor
+  - public_key: p+ea9a02hrqaRo+lCVO6XerTudT7iBDnCBwKAI+yA3E=
+    ip_address: 10.0.0.20
+    comment: lotrienlaptop

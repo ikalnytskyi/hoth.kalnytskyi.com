@@ -1,14 +1,8 @@
 ---
 
-- hosts: vaultwardens
-  roles:
-    - role: vaultwarden
-
-- hosts: reverseproxies
-  roles:
-    - role: caddy
-    - role: caddy_confd
-
-- hosts: wireguards
+- hosts: vm
   roles:
     - role: wireguard
+    - role: vaultwarden
+    - role: caddy
+    - role: caddy_confd
