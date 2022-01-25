@@ -2,7 +2,7 @@ name: CD
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   workflow_dispatch:
 
 jobs:
@@ -13,29 +13,33 @@ jobs:
     concurrency: vm.kalnytskyi.com
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
       - name: Install ansible
         run: |
           python -m pip install --upgrade pip
           python -m pip install --upgrade ansible
 
-      - name: Deploy
-        env:
-          DEPLOY_SSH_PRIVATE_KEY_PATH: ${{ runner.temp }}/id_ed25519
-          VAULTWARDEN_SMTP_PASSWORD: ${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}
-          VAULTWARDEN_YUBICO_CLIENT_ID: ${{ secrets.VAULTWARDEN_YUBICO_CLIENT_ID }}
-          VAULTWARDEN_YUBICO_SECRET_KEY: ${{ secrets.VAULTWARDEN_YUBICO_SECRET_KEY }}
+      - name: Setup a deployment SSH key
         run: |
-          echo "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ${DEPLOY_SSH_PRIVATE_KEY_PATH}
-          chmod 0600 ${DEPLOY_SSH_PRIVATE_KEY_PATH}
+          DEPLOY_SSH_PRIVATE_KEY='${{ runner.temp }}/id_ed25519'
+          echo '${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}' > $DEPLOY_SSH_PRIVATE_KEY
+          chmod 0600 $DEPLOY_SSH_PRIVATE_KEY
+          echo ::set-output name=uri::$DEPLOY_SSH_PRIVATE_KEY
+        id: ssh-key
 
+      - name: Deploy to production
+        run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}" >> ~/.ssh/known_hosts
+          echo '${{ secrets.DEPLOY_SSH_KNOWN_HOSTS }}' >> ~/.ssh/known_hosts
 
           ansible-playbook \
             -vv \
-            --private-key ${DEPLOY_SSH_PRIVATE_KEY_PATH} \
             --inventory inventory \
+            --private-key '${{ steps.ssh-key.outputs.uri }}' \
+            --extra-vars vaultwarden_smtp_password='${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}' \
+            --extra-vars vaultwarden_yubico_client_id='${{ secrets.VAULTWARDEN_YUBICO_CLIENT_ID }}' \
+            --extra-vars vaultwarden_yubico_secret_key='${{ secrets.VAULTWARDEN_YUBICO_SECRET_KEY }}' \
             --extra-vars wireguard_private_key='${{ secrets.WIREGUARD_PRIVATE_KEY }}' \
-            setup.yml
+            site.yml
