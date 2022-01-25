@@ -8,3 +8,7 @@
   roles:
     - role: caddy
     - role: caddy_confd
+
+- hosts: wireguards
+  roles:
+    - role: wireguard

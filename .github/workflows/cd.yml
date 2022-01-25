@@ -37,4 +37,5 @@ jobs:
             -vv \
             --private-key ${DEPLOY_SSH_PRIVATE_KEY_PATH} \
             --inventory inventory \
+            --extra-vars wireguard_private_key='${{ secrets.WIREGUARD_PRIVATE_KEY }}' \
             setup.yml

@@ -1,0 +1,4 @@
+---
+
+wireguard_systemd_networkd_path: /etc/systemd/network
+wireguard_private_key_path: "{{ wireguard_systemd_networkd_path }}/{{ wireguard_device_name }}.key"
