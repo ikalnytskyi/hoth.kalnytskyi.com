@@ -1,12 +1,8 @@
 ---
 
-caddy_confd_path: /etc/caddy/conf.d
 caddy_email: ihor@kalnytskyi.com
 
 vaultwarden_domain: vault.kalnytskyi.com
-vaultwarden_host: 127.0.0.1
-vaultwarden_port: 5000
-vaultwarden_ws_port: 5001
 vaultwarden_data: /mnt/data/vaultwarden
 vaultwarden_env_settings:
   DOMAIN: https://{{ vaultwarden_domain }}
@@ -15,13 +11,13 @@ vaultwarden_env_settings:
   SIGNUPS_VERIFY: true
   WEBSOCKET_ENABLED: true
   SMTP_USERNAME: vault@m.kalnytskyi.com
-  SMTP_PASSWORD: "{{ lookup('env', 'VAULTWARDEN_SMTP_PASSWORD') }}"
+  SMTP_PASSWORD: "{{ vaultwarden_smtp_password }}"
   SMTP_HOST: smtp.eu.mailgun.org
   SMTP_FROM: vault@kalnytskyi.com
   SMTP_FROM_NAME: The Vault
   SMTP_PORT: 587
-  YUBICO_CLIENT_ID: "{{ lookup('env', 'VAULTWARDEN_YUBICO_CLIENT_ID') }}"
-  YUBICO_SECRET_KEY: "{{ lookup('env', 'VAULTWARDEN_YUBICO_SECRET_KEY') }}"
+  YUBICO_CLIENT_ID: "{{ vaultwarden_yubico_client_id }}"
+  YUBICO_SECRET_KEY: "{{ vaultwarden_yubico_secret_key }}"
   ROCKET_CLI_COLORS: false
   ROCKET_WORKERS: 5
 
