@@ -1,5 +1,5 @@
 ---
 
-vaultwarden_image: vaultwarden/server:latest
+vaultwarden_image: docker.io/vaultwarden/server:latest
 vaultwarden_service_name: vaultwarden
 vaultwarden_etc: /etc/vaultwarden.d
