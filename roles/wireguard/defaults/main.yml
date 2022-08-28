@@ -1,6 +1,6 @@
 ---
 
 wireguard_device_name: wg0
-wireguard_device_address: 10.0.0.1/24
+wireguard_device_address: 192.168.4.1/24
 wireguard_port: 51820
 wireguard_peers: []
