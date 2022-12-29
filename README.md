@@ -1,7 +1,18 @@
-# vm.kalnytskyi.com
+# Hoth
 
 This repository contains Ansible playbook to deploy a VM for personal use which
-includes but not limited to self hosting various services.
+includes but not limited to self hosting various services. It's named after the
+planet from Star Wars since most (if not all) of my devices are named after
+Star Wars planets.
+
+## Prerequisites
+
+Custom `oci_image_unpack` Ansible module relies on the following components to
+be available on the provisioner node:
+
+ * skopeo
+ * umoci
+ * rsync
 
 ## Services
 

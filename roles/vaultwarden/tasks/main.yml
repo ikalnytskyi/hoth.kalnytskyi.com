@@ -1,53 +1,36 @@
 ---
 
-- name: create '{{ vaultwarden_user }}' user
-  ansible.builtin.user:
-    name: "{{ vaultwarden_user }}"
-    shell: /sbin/nologin
-    home: /var/lib/{{ vaultwarden_user }}
+- oci_image_unpack:
+    image: "{{ vaultwarden_image }}"
+    destination: "{{ vaultwarden_root }}"
   become: true
 
 - name: create data and settings directories
   ansible.builtin.file:
     path: "{{ item }}"
-    owner: "{{ vaultwarden_user }}"
-    group: "{{ vaultwarden_user }}"
-    mode: 0600
+    mode: u=rw,g=,o=
     state: directory
   with_items:
-    - "{{ vaultwarden_data }}"
     - "{{ vaultwarden_etc }}"
   become: true
 
 - name: configure vaultwarden
   ansible.builtin.template:
-    src: settings.sh.j2
-    dest: "{{ vaultwarden_etc }}/00-settings.sh"
-    owner: "{{ vaultwarden_user }}"
-    group: "{{ vaultwarden_user }}"
-    mode: 0600
-    validate: bash %s
+    src: env.j2
+    dest: "{{ vaultwarden_etc }}/env"
+    mode: u=rw,g=,o=
   become: true
 
 - name: generate vaultwarden systemd service unit
   ansible.builtin.template:
-    src: container-systemd.service.j2
-    dest: /usr/lib/systemd/system/{{ vaultwarden_service_name }}.service
-    mode: 0644
-  vars:
-    user: "{{ vaultwarden_user }}"
-    args:
-      --name vaultwarden
-      --volume {{ vaultwarden_data }}:/data/
-      --volume {{ vaultwarden_etc }}:/etc/vaultwarden.d/
-      --publish {{ vaultwarden_host }}:{{ vaultwarden_port }}:80
-      --publish {{ vaultwarden_host }}:{{ vaultwarden_ws_port }}:3012
-      {{ vaultwarden_image }}
+    src: systemd.service.j2
+    dest: /usr/lib/systemd/system/vaultwarden.service
+    mode: u=rw,g=r,o=r
   become: true
 
 - name: start vaultwarden now and on every reboot
   ansible.builtin.systemd:
-    name: "{{ vaultwarden_service_name }}.service"
+    name: vaultwarden.service
     enabled: true
     state: restarted
     daemon_reload: true

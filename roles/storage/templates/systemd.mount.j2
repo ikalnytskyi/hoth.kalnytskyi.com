@@ -1,0 +1,18 @@
+[Unit]
+Description=Persistent storage for {{ item.where }}
+
+[Mount]
+What={{ item.what }}
+Where={{ item.where }}
+{% if item.type is defined %}
+Type={{ item.type | default("auto") }}
+{% endif %}
+{% if item.options is defined %}
+Options={{ item.options }}
+{% endif %}
+{% if item.directory_mode is defined %}
+DirectoryMode={{ item.directory_mode }}
+{% endif %}
+
+[Install]
+RequiredBy=local-fs.target

@@ -1,7 +1,8 @@
 ---
 
-- hosts: vm
+- hosts: hoth
   roles:
+    - role: storage
     - role: wireguard
     - role: vaultwarden
     - role: caddy

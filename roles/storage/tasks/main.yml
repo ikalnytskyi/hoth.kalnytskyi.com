@@ -1,0 +1,5 @@
+---
+
+- name: create systemd mount points
+  include_tasks: systemd_mount.yml
+  loop: "{{ storage_mountpoints }}"

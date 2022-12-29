@@ -1,3 +1,0 @@
----
-
-podman_require_cgroupsv2: true

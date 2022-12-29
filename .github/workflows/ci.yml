@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install pre-commit
         run: |
@@ -27,29 +27,43 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install ansible
         run: |
           python -m pip install --upgrade pip
           python -m pip install --upgrade ansible
 
+      - name: Install playbook dependencies
+        run: |
+          sudo apt install skopeo umoci rsync
+
+      - name: Create block storage device (volume)
+        run: |
+          VOLUME_DEVICE="$(losetup -f)"
+          VOLUME_IMAGE="${{ runner.temp }}/diskimage"
+          dd if=/dev/zero of=$VOLUME_IMAGE bs=1M count=1024
+          sudo losetup $VOLUME_DEVICE $VOLUME_IMAGE
+          sudo mkfs.ext4 $VOLUME_DEVICE
+          echo "uri=$VOLUME_DEVICE" >> $GITHUB_OUTPUT
+        id: volume-device
+
       - name: Add server names to /etc/hosts
         run: |
-          echo "127.0.0.1 kalnytskyi.local" | sudo tee -a /etc/hosts
+          echo "127.0.0.1 hoth.kalnytskyi.local" | sudo tee -a /etc/hosts
           echo "127.0.0.1 vault.kalnytskyi.local" | sudo tee -a /etc/hosts
 
       - name: Run the playbook
         run: |
+          ansible-galaxy collection install -r requirements.yml
           ansible-playbook \
             -vvv \
-            --inventory "vm," \
+            --inventory "hoth," \
             --connection local \
+            --extra-vars storage_device='${{ steps.volume-device.outputs.uri }}' \
             --extra-vars vaultwarden_domain='vault.kalnytskyi.local' \
-            --extra-vars vaultwarden_data='${{ runner.temp }}/vaultwarden' \
-            --extra-vars vaultwarden_smtp_password='' \
+            --extra-vars vaultwarden_smtp_password='sw0rdf1sh' \
             --extra-vars vaultwarden_yubico_client_id='' \
             --extra-vars vaultwarden_yubico_secret_key='' \
             --extra-vars wireguard_private_key='qOanPI1Z6XlEcR+ebyPB7z5qr6F2S0FZP7iWe+4AqVA=' \
-            --extra-vars '{"podman_require_cgroupsv2": false }' \
             site.yml

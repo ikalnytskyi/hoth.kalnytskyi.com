@@ -1,2 +1,2 @@
-[vm]
-vm.kalnytskyi.com ansible_user=provisioner
+[hoth]
+hoth.kalnytskyi.com ansible_user=provisioner

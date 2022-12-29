@@ -1,8 +1,5 @@
 ---
 
-dependencies:
-  - role: podman
-
 argument_specs:
   main:
     options:
@@ -11,24 +8,24 @@ argument_specs:
         required: true
         description: |
           The domain to serve requests from.
-      vaultwarden_data:
-        type: str
-        required: true
-        description: |
-          An absolute path to the directory to store vaultwarden state in.
-      vaultwarden_user:
-        type: str
-        default: vault
-        description: |
-          The user to run vaultwarden under. If the user does not exist, it
-          will be created.
       vaultwarden_host:
         type: str
         default: 127.0.0.1
         description: |
-          The host address to bind vaultwarden to.
+          The host address to bind Vaultwarden to.
       vaultwarden_port:
         type: int
         default: 5000
         description: |
-          The port to bind vaultwarden to.
+          The port to bind Vaultwarden to.
+      vaultwarden_ws_port:
+        type: int
+        default: 5001
+        description: |
+          The websocket port to bind Vaultwarden to.
+      vaultwarden_env_settings:
+        type: dict
+        default: {}
+        description: |
+          The Vaultwarden settings passed "As Is" to the service. See
+          Vaultwarden's `.env.template` for supported options.
