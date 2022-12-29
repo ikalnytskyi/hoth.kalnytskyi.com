@@ -43,3 +43,6 @@ wireguard_peers:
   - public_key: 5+FbI/E9F3CJd4UT9LeMC3vjesH2PsVQ72k9kEwsdzg=
     ip_address: 192.168.4.21
     comment: lotrienphone
+  - public_key: HB/55xINQU4SyPZvWH9mKybs7+7uPc6wZM4I7aLnSm4=
+    ip_address: 192.168.4.22
+    comment: lotrientablet
