@@ -1,7 +1,6 @@
 ---
 
-vaultwarden_user: vault
 vaultwarden_host: 127.0.0.1
 vaultwarden_port: 5000
 vaultwarden_ws_port: 5001
-vaultwarden_env_settings: null
+vaultwarden_env_settings: {}

@@ -1,0 +1,33 @@
+[Unit]
+Description=Vaultwarden (unofficial Bitwarden server)
+Documentation=https://github.com/dani-garcia/vaultwarden/wiki
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+RootDirectory={{ vaultwarden_root }}
+ExecStart=/vaultwarden
+StateDirectory=vaultwarden
+CacheDirectory=vaultwarden
+Environment=DATA_FOLDER=%S/vaultwarden
+Environment=ICON_CACHE_FOLDER=%C/vaultwarden/icons
+Environment=TMP_FOLDER=%T
+EnvironmentFile=%E/vaultwarden/env
+DevicePolicy=closed
+DynamicUser=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+PrivateDevices=true
+PrivateDevices=true
+PrivateUsers=true
+ProcSubset=pid
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+ProtectProc=invisible
+RestrictNamespaces=true
+RestrictRealtime=true
+Restart=on-abnormal

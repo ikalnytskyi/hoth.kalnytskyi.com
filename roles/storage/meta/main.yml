@@ -1,0 +1,50 @@
+---
+
+argument_specs:
+  main:
+    options:
+      storage_mountpoints:
+        type: list
+        elements: dict
+        options:
+          what:
+            type: str
+            required: true
+            description: |
+              Takes an absolute path of a device node, file or other resource
+              to mount. If this mount is a bind mount and the specified path
+              does not exist yet it is created as directory. Note that the
+              usual specifier expansion is applied to this setting, literal
+              percent characters should hence be written as "%%".
+          where:
+            type: str
+            required: true
+            description: |
+              Takes an absolute path of a file or directory for the mount
+              point; in particular, the destination cannot be a symbolic link.
+              If the mount point does not exist at the time of mounting, it is
+              created as directory.
+          type:
+            type: str
+            description: |
+              Takes a string for the file system type. See mount(8) for
+              details. This setting is optional.
+          options:
+            type: str
+            description: |
+              Mount options to use when mounting. This takes a comma-separated
+              list of options. This setting is optional. Note that the usual
+              specifier expansion is applied to this setting, literal percent
+              characters should hence be written as "%%".
+          directory_mode:
+            type: str
+            description: |
+              Directories of mount points (and any parent directories) are
+              automatically created if needed. This option specifies the
+              file system access mode used when creating these directories.
+              Takes an access mode in octal notation.
+        default: []
+        description: |
+          The list of filesystem binds (mounts) to do. Normally used to map
+          directories from volume to other parts of the filesystem to
+          implicitly store data on volume.

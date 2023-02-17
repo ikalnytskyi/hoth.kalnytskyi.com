@@ -2,8 +2,25 @@
 
 caddy_email: ihor@kalnytskyi.com
 
+storage_device: /dev/disk/by-id/scsi-0DO_Volume_hoth
+storage_mountpoints:
+  # The block storage device to store the most important data on. Since VMs
+  # root disks are ephemeral in many cloud providers, using block storage
+  # device to persist your data is a good idea.
+  - what: "{{ storage_device }}"
+    where: /mnt/data
+    type: ext4
+    options: defaults
+    directory_mode: "0700"
+
+  # Vaultwarden is running with sandboxing configured with no access to
+  # block storage device. In order to spare ...
+  - what: /mnt/data/vaultwarden
+    where: /var/lib/private/vaultwarden
+    options: bind
+    directory_mode: "0700"
+
 vaultwarden_domain: vault.kalnytskyi.com
-vaultwarden_data: /mnt/data/vaultwarden
 vaultwarden_env_settings:
   DOMAIN: https://{{ vaultwarden_domain }}
   INVITATION_ORG_NAME: The Vault

@@ -1,8 +1,0 @@
----
-
-podman_apt_prerequisite_packages:
-  - debian-keyring
-  - debian-archive-keyring
-  - apt-transport-https
-podman_apt_repo_src: deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ansible_distribution_version }}/ /
-podman_apt_repo_gpg: https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/xUbuntu_{{ ansible_distribution_version }}/Release.key
