@@ -1,24 +1,24 @@
 ---
 
-- name: update apt cache if needed
+- name: Update apt cache if needed
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
   become: true
 
-- name: install apt prerequisite packages
+- name: Install apt prerequisite packages
   ansible.builtin.apt:
     name: "{{ caddy_apt_prerequisite_packages }}"
     state: present
   become: true
 
-- name: add caddy apt repo signing key
+- name: Add caddy apt repo signing key
   ansible.builtin.apt_key:
     url: "{{ caddy_apt_repo_gpg }}"
     state: present
   become: true
 
-- name: add caddy apt repo
+- name: Add caddy apt repo
   ansible.builtin.apt_repository:
     repo: "{{ item }}"
     state: present
@@ -26,27 +26,27 @@
   with_items: "{{ caddy_apt_repo_src }}"
   become: true
 
-- name: install caddy
+- name: Install caddy
   ansible.builtin.apt:
     name: caddy
     state: present
   become: true
 
-- name: configure caddy to serve virtual hosts from multiple files
+- name: Configure caddy to serve virtual hosts from multiple files
   ansible.builtin.template:
     src: caddyfile.j2
     dest: /etc/caddy/Caddyfile
-    mode: 0644
+    mode: u=rw,g=r,o=r
   become: true
 
-- name: create conf.d directory to store virtual hosts
+- name: Create conf.d directory to store virtual hosts
   ansible.builtin.file:
     path: "{{ caddy_confd_path }}"
     state: directory
-    mode: 0755
+    mode: u=rwx,g=rx,o=rx
   become: true
 
-- name: start caddy now and on every reboot
+- name: Start caddy now and on every reboot
   ansible.builtin.systemd:
     name: caddy.service
     enabled: true

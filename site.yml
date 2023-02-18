@@ -1,6 +1,7 @@
 ---
 
-- hosts: hoth
+- name: Provision
+  hosts: hoth
   roles:
     - role: storage
     - role: wireguard

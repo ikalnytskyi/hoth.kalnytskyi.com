@@ -1,5 +1,5 @@
 ---
 
-- name: create systemd mount points
-  include_tasks: systemd_mount.yml
+- name: Create systemd mount points
+  ansible.builtin.include_tasks: systemd_mount.yml
   loop: "{{ storage_mountpoints }}"

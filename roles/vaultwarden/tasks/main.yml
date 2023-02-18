@@ -1,11 +1,12 @@
 ---
 
-- oci_image_unpack:
+- name: Fetch and unpack Vaultwarden image
+  oci_image_unpack:
     image: "{{ vaultwarden_image }}"
     destination: "{{ vaultwarden_root }}"
   become: true
 
-- name: create data and settings directories
+- name: Create data and settings directories
   ansible.builtin.file:
     path: "{{ item }}"
     mode: u=rw,g=,o=
@@ -14,21 +15,21 @@
     - "{{ vaultwarden_etc }}"
   become: true
 
-- name: configure vaultwarden
+- name: Configure vaultwarden
   ansible.builtin.template:
     src: env.j2
     dest: "{{ vaultwarden_etc }}/env"
     mode: u=rw,g=,o=
   become: true
 
-- name: generate vaultwarden systemd service unit
+- name: Generate vaultwarden systemd service unit
   ansible.builtin.template:
     src: systemd.service.j2
     dest: /usr/lib/systemd/system/vaultwarden.service
     mode: u=rw,g=r,o=r
   become: true
 
-- name: start vaultwarden now and on every reboot
+- name: Start vaultwarden now and on every reboot
   ansible.builtin.systemd:
     name: vaultwarden.service
     enabled: true

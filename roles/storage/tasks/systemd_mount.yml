@@ -1,22 +1,22 @@
 ---
 
-- name: generate systemd mount unit name
+- name: Generate systemd mount unit name
   ansible.builtin.command: systemd-escape -p --suffix=mount {{ item.where }}
   register: systemd_escape
   changed_when: false
 
-- name: set systemd mount unit name
+- name: Set systemd mount unit name
   ansible.builtin.set_fact:
     unit_name: "{{ systemd_escape.stdout }}"
 
-- name: render systemd mount unit
+- name: Render systemd mount unit
   ansible.builtin.template:
     src: systemd.mount.j2
     dest: /usr/lib/systemd/system/{{ unit_name }}
     mode: u=rw,g=r,o=r
   become: true
 
-- name: start systemd mount unit and on every reboot
+- name: Start systemd mount unit and on every reboot
   ansible.builtin.systemd:
     name: "{{ unit_name }}"
     enabled: true
