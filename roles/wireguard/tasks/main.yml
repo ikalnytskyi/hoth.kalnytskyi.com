@@ -1,38 +1,38 @@
 ---
 
-- name: update apt cache if needed
+- name: Update apt cache if needed
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
   become: true
 
-- name: install wireguard
+- name: Install Wireguard
   ansible.builtin.apt:
     name: wireguard
     state: present
   become: true
 
-- name: create private key
+- name: Create private key
   ansible.builtin.copy:
     content: "{{ wireguard_private_key }}"
     dest: "{{ wireguard_private_key_path }}"
     group: systemd-network
     mode: u=rw,g=r,o=
-  notify: wireguard-systemd-networkd-restart
+  notify: Wireguard-systemd-networkd-restart
   become: true
 
-- name: configure wireguard network device
+- name: Configure wireguard network device
   ansible.builtin.template:
     src: systemd.netdev.j2
     dest: "{{ wireguard_systemd_networkd_path }}/{{ wireguard_device_name }}.netdev"
     mode: u=rw,g=r,o=r
-  notify: wireguard-systemd-networkd-restart
+  notify: Wireguard-systemd-networkd-restart
   become: true
 
-- name: configure wireguard network
+- name: Configure wireguard network
   ansible.builtin.template:
     src: systemd.network.j2
     dest: "{{ wireguard_systemd_networkd_path }}/{{ wireguard_device_name }}.network"
     mode: u=rw,g=r,o=r
-  notify: wireguard-systemd-networkd-restart
+  notify: Wireguard-systemd-networkd-restart
   become: true

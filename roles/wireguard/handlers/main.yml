@@ -1,6 +1,6 @@
 ---
 
-- name: wireguard-systemd-networkd-restart
+- name: Wireguard-systemd-networkd-restart
   ansible.builtin.systemd:
     name: systemd-networkd.service
     state: restarted
