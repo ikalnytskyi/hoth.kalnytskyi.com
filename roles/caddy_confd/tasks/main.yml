@@ -1,9 +1,9 @@
 ---
 
-- name: Render vaultwarden caddy configuration
+- name: Render Caddy configuration for Vaultwarden
   ansible.builtin.template:
     src: vaultwarden.caddy.j2
     dest: "{{ (caddy_confd_path, 'vaultwarden.caddy') | path_join }}"
     mode: u=rw,g=r,o=r
-  notify: Reload caddy
+  notify: caddy-restart
   become: true
