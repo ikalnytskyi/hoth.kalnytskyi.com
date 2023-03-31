@@ -6,6 +6,7 @@ Requires=network-online.target
 
 [Service]
 RootDirectory={{ vaultwarden_root }}
+BindReadOnlyPaths=/etc/resolv.conf
 ExecStart=/vaultwarden
 StateDirectory=vaultwarden
 CacheDirectory=vaultwarden
@@ -17,7 +18,6 @@ DevicePolicy=closed
 DynamicUser=true
 LockPersonality=true
 MemoryDenyWriteExecute=true
-PrivateDevices=true
 PrivateDevices=true
 PrivateUsers=true
 ProcSubset=pid
