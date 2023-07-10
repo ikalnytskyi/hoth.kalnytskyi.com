@@ -26,7 +26,6 @@ vaultwarden_env_settings:
   INVITATION_ORG_NAME: The Vault
   SIGNUPS_ALLOWED: false
   SIGNUPS_VERIFY: true
-  WEBSOCKET_ENABLED: true
   SMTP_USERNAME: vault@m.kalnytskyi.com
   SMTP_PASSWORD: "{{ vaultwarden_smtp_password }}"
   SMTP_HOST: smtp.eu.mailgun.org

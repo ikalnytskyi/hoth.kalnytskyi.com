@@ -18,11 +18,6 @@ argument_specs:
         default: 5000
         description: |
           The port to bind Vaultwarden to.
-      vaultwarden_ws_port:
-        type: int
-        default: 5001
-        description: |
-          The websocket port to bind Vaultwarden to.
       vaultwarden_env_settings:
         type: dict
         default: {}
