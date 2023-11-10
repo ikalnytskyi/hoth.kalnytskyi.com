@@ -1,5 +1,5 @@
 ---
 
-vaultwarden_image: docker://docker.io/vaultwarden/server:alpine
+vaultwarden_image: docker://docker.io/vaultwarden/server:latest-alpine
 vaultwarden_root: /opt/vaultwarden
 vaultwarden_etc: /etc/vaultwarden
