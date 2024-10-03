@@ -62,3 +62,6 @@ wireguard_peers:
   - public_key: HB/55xINQU4SyPZvWH9mKybs7+7uPc6wZM4I7aLnSm4=
     ip_address: 192.168.4.22
     comment: lotrientablet
+  - public_key: wqMjN1Jvc4mSUeI5G9YdgK+Q724DWlKDsznE8tYbIB8=
+    ip_address: 192.168.4.33
+    comment: propheticbird
