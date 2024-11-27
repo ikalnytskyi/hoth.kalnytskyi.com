@@ -1,0 +1,29 @@
+[Unit]
+Description=Connect to the Kopia repository
+Documentation=https://kopia.io/docs/
+After=network.target network-online.target
+Requires=network-online.target
+ConditionPathExists=|!%E/kopia/repository.config
+ConditionPathExists=|!%E/kopia/repository.config.kopia-password
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/kopia repository connect from-config --token-file %d/kopia-reconnect-token
+RootDirectory=%S/kopia
+BindReadOnlyPaths=/usr/bin/kopia
+BindReadOnlyPaths=/etc/ssl
+BindReadOnlyPaths=/etc/resolv.conf
+StateDirectory=kopia
+CacheDirectory=kopia
+ConfigurationDirectory=kopia
+LogsDirectory=kopia
+Environment=KOPIA_CHECK_FOR_UPDATES=false
+Environment=KOPIA_LOG_DIR=%L/kopia
+Environment=KOPIA_PASSWORD=1234
+Environment=XDG_CACHE_HOME=%C
+Environment=XDG_CONFIG_HOME=%E
+LoadCredentialEncrypted=kopia-reconnect-token
+
+[Install]
+WantedBy=multi-user.target

@@ -44,6 +44,10 @@ jobs:
             -vv \
             --inventory inventory \
             --private-key '${{ steps.ssh-key.outputs.uri }}' \
+            --extra-vars kopia_repository_password='${{ secrets.KOPIA_REPOSITORY_PASSWORD }}' \
+            --extra-vars kopia_repository_webdav_url='${{ secrets.KOPIA_REPOSITORY_WEBDAV_URL }}' \
+            --extra-vars kopia_repository_webdav_username='${{ secrets.KOPIA_REPOSITORY_WEBDAV_USERNAME }}' \
+            --extra-vars kopia_repository_webdav_password='${{ secrets.KOPIA_REPOSITORY_WEBDAV_PASSWORD }}' \
             --extra-vars vaultwarden_smtp_password='${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}' \
             --extra-vars vaultwarden_yubico_client_id='${{ secrets.VAULTWARDEN_YUBICO_CLIENT_ID }}' \
             --extra-vars vaultwarden_yubico_secret_key='${{ secrets.VAULTWARDEN_YUBICO_SECRET_KEY }}' \

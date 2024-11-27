@@ -61,6 +61,10 @@ jobs:
             --inventory "hoth," \
             --connection local \
             --extra-vars storage_device='${{ steps.volume-device.outputs.uri }}' \
+            --extra-vars kopia_repository_password='' \
+            --extra-vars kopia_repository_webdav_url='' \
+            --extra-vars kopia_repository_webdav_username='' \
+            --extra-vars kopia_repository_webdav_password='' \
             --extra-vars vaultwarden_domain='vault.kalnytskyi.local' \
             --extra-vars vaultwarden_smtp_password='sw0rdf1sh' \
             --extra-vars vaultwarden_yubico_client_id='' \

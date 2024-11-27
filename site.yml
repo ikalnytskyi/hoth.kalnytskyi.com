@@ -3,8 +3,9 @@
 - name: Provision
   hosts: hoth
   roles:
-    - role: storage
-    - role: wireguard
-    - role: vaultwarden
-    - role: caddy
-    - role: caddy_confd
+    # - role: storage
+    - role: kopia
+    # - role: wireguard
+    # - role: vaultwarden
+    # - role: caddy
+    # - role: caddy_confd
