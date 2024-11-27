@@ -1,0 +1,10 @@
+[Unit]
+Description=Create Kopia snapshots every hour
+Documentation=https://kopia.io/docs/
+
+[Timer]
+OnCalendar=hourly
+Persistent=true
+
+[Install]
+WantedBy=timers.target
