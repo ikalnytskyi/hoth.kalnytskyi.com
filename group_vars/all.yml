@@ -2,7 +2,7 @@
 
 caddy_email: ihor@kalnytskyi.com
 
-storage_device: /dev/disk/by-id/scsi-0DO_Volume_hoth
+storage_device: /dev/disk/by-id/scsi-0HC_Volume_101710174
 storage_mountpoints:
   # The block storage device to store the most important data on. Since VMs
   # root disks are ephemeral in many cloud providers, using block storage
