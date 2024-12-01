@@ -12,7 +12,7 @@
 - name: Render systemd mount unit
   ansible.builtin.template:
     src: systemd.mount.j2
-    dest: /usr/lib/systemd/system/{{ unit_name }}
+    dest: /etc/systemd/system/{{ unit_name }}
     mode: u=rw,g=r,o=r
   become: true
 
