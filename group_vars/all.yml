@@ -13,12 +13,13 @@ storage_mountpoints:
     options: defaults
     directory_mode: "0700"
 
-  # Vaultwarden is running with sandboxing configured with no access to
-  # block storage device. In order to spare ...
+  # Vaultwarden is running with sandboxing configured with no access to block
+  # storage device and without any knowledge about it. Let's just make sure
+  # that the directory Vaultwarden stores its state is mounted from the block
+  # storage.
   - what: /mnt/data/vaultwarden
     where: /var/lib/private/vaultwarden
     options: bind
-    directory_mode: "0700"
 
 vaultwarden_domain: vault.kalnytskyi.com
 vaultwarden_env_settings:

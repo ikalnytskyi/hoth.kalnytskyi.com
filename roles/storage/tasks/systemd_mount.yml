@@ -23,3 +23,11 @@
     state: started
     daemon_reload: true
   become: true
+
+- name: Ensures permissions of the mount point
+  ansible.builtin.file:
+    path: "{{ item.where }}"
+    state: directory
+    mode: "{{ item.directory_mode }}"
+  when: item.directory_mode is defined
+  become: true
