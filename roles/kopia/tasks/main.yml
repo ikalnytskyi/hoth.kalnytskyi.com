@@ -1,0 +1,64 @@
+---
+
+- name: Add kopia apt repo signing key
+  ansible.builtin.apt_key:
+    url: "{{ kopia_apt_repo_gpg }}"
+    state: present
+  become: true
+
+- name: Add kopia apt repo
+  ansible.builtin.apt_repository:
+    repo: "{{ kopia_apt_repo_src }}"
+    state: present
+    filename: kopia
+  become: true
+
+- name: Install kopia
+  ansible.builtin.apt:
+    name: kopia
+    state: present
+  become: true
+
+- name: Create reconnect token systemd credential
+  ansible.builtin.command:
+    cmd: systemd-creds encrypt - /etc/credstore.encrypted/kopia-reconnect-token
+    stdin: "{{ kopia_repository_reconnect_token }}"
+  changed_when: true
+  become: true
+
+- name: Generate kopia repository connect service
+  ansible.builtin.template:
+    src: repository-connect.service.j2
+    dest: /etc/systemd/system/kopia-repository-connect.service
+    mode: u=rw,g=r,o=r
+  become: true
+
+- name: Generate kopia snapshot systemd service unit
+  ansible.builtin.template:
+    src: snapshot-create.service.j2
+    dest: /etc/systemd/system/kopia-snapshot-create.service
+    mode: u=rw,g=r,o=r
+  become: true
+
+- name: Generate kopia snapshots systemd timer unit
+  ansible.builtin.template:
+    src: snapshot-create.timer.j2
+    dest: /etc/systemd/system/kopia-snapshot-create.timer
+    mode: u=rw,g=r,o=r
+  become: true
+
+- name: Restart kopia repository connect
+  ansible.builtin.systemd:
+    name: kopia-repository-connect.service
+    enabled: true
+    state: restarted
+    daemon_reload: true
+  become: true
+
+- name: Start kopia snapshots timer now and on every reboot
+  ansible.builtin.systemd:
+    name: kopia-snapshot-create.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+  become: true

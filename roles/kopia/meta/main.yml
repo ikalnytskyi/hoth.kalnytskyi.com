@@ -1,0 +1,29 @@
+---
+
+argument_specs:
+  main:
+    options:
+      kopia_repository_reconnect_token:
+        type: str
+        required: true
+        description: |
+          Takes a reconnect token that encodes all repository connection
+          parameters and the repository (encryption) password. Despite not
+          being granular enough, this is the most ubiquitous way to support
+          various repository providers.
+
+          The reconnect token can be printed by executing the following
+          command:
+
+              kopia repository status --reconnect-token --reconnect-token-with-password
+      kopia_snapshots:
+        type: list
+        elements: dict
+        options:
+          target:
+            type: str
+            required: true
+            description: |
+              Takes an absolute path for periodic snapshots. The path can point
+              to either a directory or a file.
+        default: []
