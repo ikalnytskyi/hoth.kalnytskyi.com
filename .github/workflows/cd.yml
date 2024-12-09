@@ -45,6 +45,8 @@ jobs:
             --inventory inventory \
             --private-key '${{ steps.ssh-key.outputs.uri }}' \
             --extra-vars kopia_repository_reconnect_token='${{ secrets.KOPIA_REPOSITORY_RECONNECT_TOKEN }}' \
+            --extra-vars vaultwarden_push_installation_id='${{ secrets.VAULTWARDEN_PUSH_INSTALLATION_ID }}' \
+            --extra-vars vaultwarden_push_installation_key='${{ secrets.VAULTWARDEN_PUSH_INSTALLATION_KEY }}' \
             --extra-vars vaultwarden_smtp_password='${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}' \
             --extra-vars vaultwarden_yubico_client_id='${{ secrets.VAULTWARDEN_YUBICO_CLIENT_ID }}' \
             --extra-vars vaultwarden_yubico_secret_key='${{ secrets.VAULTWARDEN_YUBICO_SECRET_KEY }}' \

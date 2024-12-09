@@ -88,6 +88,8 @@ jobs:
             --extra-vars storage_device='${{ steps.volume-device.outputs.uri }}' \
             --extra-vars kopia_repository_reconnect_token='${{ steps.kopia-repository.outputs.reconnect-token }}' \
             --extra-vars vaultwarden_domain='vault.kalnytskyi.local' \
+            --extra-vars vaultwarden_push_installation_id='id' \
+            --extra-vars vaultwarden_push_installation_key='key' \
             --extra-vars vaultwarden_smtp_password='sw0rdf1sh' \
             --extra-vars vaultwarden_yubico_client_id='' \
             --extra-vars vaultwarden_yubico_secret_key='' \
