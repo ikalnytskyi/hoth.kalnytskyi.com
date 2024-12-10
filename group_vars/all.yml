@@ -40,6 +40,11 @@ vaultwarden_env_settings:
   SMTP_PORT: 587
   YUBICO_CLIENT_ID: "{{ vaultwarden_yubico_client_id }}"
   YUBICO_SECRET_KEY: "{{ vaultwarden_yubico_secret_key }}"
+  PUSH_ENABLED: true
+  PUSH_INSTALLATION_ID: "{{ vaultwarden_push_installation_id }}"
+  PUSH_INSTALLATION_KEY: "{{ vaultwarden_push_installation_key }}"
+  PUSH_RELAY_URI: https://api.bitwarden.eu
+  PUSH_IDENTITY_URI: https://identity.bitwarden.eu
   ROCKET_CLI_COLORS: false
   ROCKET_WORKERS: 5
 
