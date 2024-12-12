@@ -1,29 +1,21 @@
 ---
 
+- name: Add caddy deb repo
+  ansible.builtin.deb822_repository: "{{ caddy_deb_repo }}"
+  register: caddy_deb_repo_result
+  become: true
+
 - name: Update apt cache if needed
   ansible.builtin.apt:
     update_cache: true
     cache_valid_time: 3600
+  when: caddy_deb_repo_result.changed
   become: true
 
 - name: Install apt prerequisite packages
   ansible.builtin.apt:
-    name: "{{ caddy_apt_prerequisite_packages }}"
+    name: "{{ caddy_prerequisite_packages }}"
     state: present
-  become: true
-
-- name: Add caddy apt repo signing key
-  ansible.builtin.apt_key:
-    url: "{{ caddy_apt_repo_gpg }}"
-    state: present
-  become: true
-
-- name: Add caddy apt repo
-  ansible.builtin.apt_repository:
-    repo: "{{ item }}"
-    state: present
-    filename: caddy
-  with_items: "{{ caddy_apt_repo_src }}"
   become: true
 
 - name: Install caddy

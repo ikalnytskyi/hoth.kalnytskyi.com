@@ -1,16 +1,15 @@
 ---
 
-- name: Add kopia apt repo signing key
-  ansible.builtin.apt_key:
-    url: "{{ kopia_apt_repo_gpg }}"
-    state: present
+- name: Add kopia deb repo
+  ansible.builtin.deb822_repository: "{{ kopia_deb_repo }}"
+  register: kopia_deb_repo_result
   become: true
 
-- name: Add kopia apt repo
-  ansible.builtin.apt_repository:
-    repo: "{{ kopia_apt_repo_src }}"
-    state: present
-    filename: kopia
+- name: Update apt cache if needed
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+  when: kopia_deb_repo_result.changed
   become: true
 
 - name: Install kopia

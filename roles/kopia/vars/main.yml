@@ -1,4 +1,9 @@
 ---
 
-kopia_apt_repo_src: deb https://packages.kopia.io/apt/ stable main
-kopia_apt_repo_gpg: https://kopia.io/signing-key
+kopia_deb_repo:
+  name: kopia
+  types: deb
+  uris: https://packages.kopia.io/apt/
+  suites: stable
+  components: main
+  signed_by: https://kopia.io/signing-key
