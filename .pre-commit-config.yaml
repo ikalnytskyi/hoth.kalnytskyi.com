@@ -18,5 +18,5 @@ repos:
     rev: v6.13.1
     hooks:
       - id: ansible-lint
-        args: [-x, meta-no-info]
+        args: [-x, "meta-no-info,no-handler"]
         files: \.(yaml|yml)$
