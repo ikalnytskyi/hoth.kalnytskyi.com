@@ -1,5 +1,13 @@
 ---
 
+- name: Create Vaultwarden secret
+  ansible.builtin.command:
+    cmd: systemd-creds encrypt - /etc/credstore.encrypted/{{ item.key }}
+    stdin: "{{ item.value }}"
+  loop: "{{ vaultwarden_secrets | dict2items }}"
+  changed_when: true
+  become: true
+
 - name: Fetch and unpack Vaultwarden image
   oci_image_unpack:
     image: "{{ vaultwarden_image }}"
@@ -13,13 +21,6 @@
     state: directory
   with_items:
     - "{{ vaultwarden_etc }}"
-  become: true
-
-- name: Configure vaultwarden
-  ansible.builtin.template:
-    src: env.j2
-    dest: "{{ vaultwarden_etc }}/env"
-    mode: u=rw,g=,o=
   become: true
 
 - name: Generate vaultwarden systemd service unit

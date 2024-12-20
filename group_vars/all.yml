@@ -27,22 +27,28 @@ storage_mountpoints:
     options: bind
 
 vaultwarden_domain: vault.kalnytskyi.com
+vaultwarden_secrets:
+  vaultwarden-smtp-password: "{{ vaultwarden_smtp_password }}"
+  vaultwarden-yubico-client-id: "{{ vaultwarden_yubico_client_id }}"
+  vaultwarden-yubico-secret-key: "{{ vaultwarden_yubico_secret_key }}"
+  vaultwarden-push-installation-id: "{{ vaultwarden_push_installation_id }}"
+  vaultwarden-push-installation-key: "{{ vaultwarden_push_installation_key }}"
 vaultwarden_env_settings:
   DOMAIN: https://{{ vaultwarden_domain }}
   INVITATION_ORG_NAME: The Vault
   SIGNUPS_ALLOWED: false
   SIGNUPS_VERIFY: true
   SMTP_USERNAME: vault@m.kalnytskyi.com
-  SMTP_PASSWORD: "{{ vaultwarden_smtp_password }}"
+  SMTP_PASSWORD_FILE: "%d/vaultwarden-smtp-password"
   SMTP_HOST: smtp.eu.mailgun.org
   SMTP_FROM: vault@kalnytskyi.com
   SMTP_FROM_NAME: The Vault
   SMTP_PORT: 587
-  YUBICO_CLIENT_ID: "{{ vaultwarden_yubico_client_id }}"
-  YUBICO_SECRET_KEY: "{{ vaultwarden_yubico_secret_key }}"
-  PUSH_ENABLED: true
-  PUSH_INSTALLATION_ID: "{{ vaultwarden_push_installation_id }}"
-  PUSH_INSTALLATION_KEY: "{{ vaultwarden_push_installation_key }}"
+  YUBICO_CLIENT_ID_FILE: "%d/vaultwarden-yubico-client-id"
+  YUBICO_SECRET_KEY_FILE: "%d/vaultwarden-yubico-secret-key"
+  PUSH_ENABLED: "{{ (vaultwarden_push_installation_id and vaultwarden_push_installation_key) | bool }}"
+  PUSH_INSTALLATION_ID_FILE: "%d/vaultwarden-push-installation-id"
+  PUSH_INSTALLATION_KEY_FILE: "%d/vaultwarden-push-installation-key"
   PUSH_RELAY_URI: https://api.bitwarden.eu
   PUSH_IDENTITY_URI: https://identity.bitwarden.eu
   ROCKET_CLI_COLORS: false
