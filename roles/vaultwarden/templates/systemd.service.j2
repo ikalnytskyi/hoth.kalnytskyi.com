@@ -13,7 +13,14 @@ CacheDirectory=vaultwarden
 Environment=DATA_FOLDER=%S/vaultwarden
 Environment=ICON_CACHE_FOLDER=%C/vaultwarden/icons
 Environment=TMP_FOLDER=%T
-EnvironmentFile=%E/vaultwarden/env
+Environment=ROCKET_ADDRESS={{ vaultwarden_host }}
+Environment=ROCKET_PORT={{ vaultwarden_port }}
+{% for name, value in vaultwarden_env_settings.items() %}
+Environment="{{ name }}={{ value }}"
+{% endfor %}
+{% for name in vaultwarden_secrets %}
+LoadCredentialEncrypted={{ name }}
+{% endfor %}
 DevicePolicy=closed
 DynamicUser=true
 LockPersonality=true
