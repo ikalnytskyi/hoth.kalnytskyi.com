@@ -1,0 +1,8 @@
+---
+
+- name: Restart sshd
+  ansible.builtin.systemd:
+    name: ssh.service
+    state: restarted
+  listen: security-systemd-sshd-restart
+  become: true

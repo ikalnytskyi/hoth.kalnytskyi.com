@@ -1,0 +1,9 @@
+---
+
+- name: Turn off SSH password authentication
+  ansible.builtin.copy:
+    content: PasswordAuthentication no
+    dest: /etc/ssh/sshd_config.d/10-no-password-authentication.conf
+    mode: u=rw,g=r,o=r
+  notify: security-systemd-sshd-restart
+  become: true
