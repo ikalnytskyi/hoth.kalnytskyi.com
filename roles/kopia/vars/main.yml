@@ -1,9 +1,8 @@
 ---
 
-kopia_deb_repo:
-  name: kopia
-  types: deb
-  uris: https://packages.kopia.io/apt/
-  suites: stable
-  components: main
-  signed_by: https://kopia.io/signing-key
+kopia_deb_repo_name: kopia
+kopia_deb_repo_types: deb
+kopia_deb_repo_uris: https://packages.kopia.io/apt/
+kopia_deb_repo_suites: stable
+kopia_deb_repo_components: main
+kopia_deb_repo_signed_by: https://kopia.io/signing-key
