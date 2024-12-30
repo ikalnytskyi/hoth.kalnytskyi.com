@@ -3,6 +3,7 @@
 - name: Provision
   hosts: hoth
   roles:
+    - role: hardening
     - role: storage
     - role: kopia
     - role: wireguard
