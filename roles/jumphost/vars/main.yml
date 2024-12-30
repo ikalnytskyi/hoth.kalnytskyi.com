@@ -1,0 +1,5 @@
+---
+
+jumphost_user: bunny
+jumphost_home: /var/lib/{{ jumphost_user }}
+jumphost_nologin: /sbin/nologin
