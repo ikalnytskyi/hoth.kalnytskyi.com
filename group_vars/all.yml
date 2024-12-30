@@ -5,7 +5,8 @@ _storage_device_mountpoint: /mnt/data
 caddy_email: ihor@kalnytskyi.com
 
 jumphost_authorized_keys:
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEwn8Vak70MKJqJwKofCvWsd7RzeYlL+So3+26u68Izb gh-action@xsnippet-infra
+  - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILHhXRvB2T1K34cdtsxAgbk3TImIag3JJr+zfUN5UZpmAAAABHNzaDo= ikalnytskyi@endor
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHAEIxiGb9V0FpO96Rhwdh0og7mLCibKWCc4PFSW9oxM gh-action@xsnippet-infra
 
 kopia_snapshots:
   - target: "{{ _storage_device_mountpoint }}"
