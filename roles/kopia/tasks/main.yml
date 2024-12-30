@@ -1,7 +1,13 @@
 ---
 
 - name: Add kopia deb repo
-  ansible.builtin.deb822_repository: "{{ kopia_deb_repo }}"
+  ansible.builtin.deb822_repository:
+    name: "{{ kopia_deb_repo_name }}"
+    types: "{{ kopia_deb_repo_types }}"
+    uris: "{{ kopia_deb_repo_uris }}"
+    suites: "{{ kopia_deb_repo_suites }}"
+    components: "{{ kopia_deb_repo_components }}"
+    signed_by: "{{ kopia_deb_repo_signed_by }}"
   register: kopia_deb_repo_result
   become: true
 

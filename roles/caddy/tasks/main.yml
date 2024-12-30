@@ -1,7 +1,13 @@
 ---
 
 - name: Add caddy deb repo
-  ansible.builtin.deb822_repository: "{{ caddy_deb_repo }}"
+  ansible.builtin.deb822_repository:
+    name: "{{ caddy_deb_repo_name }}"
+    types: "{{ caddy_deb_repo_types }}"
+    uris: "{{ caddy_deb_repo_uris }}"
+    suites: "{{ caddy_deb_repo_suites }}"
+    components: "{{ caddy_deb_repo_components }}"
+    signed_by: "{{ caddy_deb_repo_signed_by }}"
   register: caddy_deb_repo_result
   become: true
 
@@ -29,6 +35,7 @@
     src: caddyfile.j2
     dest: /etc/caddy/Caddyfile
     mode: u=rw,g=r,o=r
+  notify: caddy-restart
   become: true
 
 - name: Create conf.d directory to store virtual hosts
@@ -38,9 +45,8 @@
     mode: u=rwx,g=rx,o=rx
   become: true
 
-- name: Start caddy now and on every reboot
+- name: Start caddy on every reboot
   ansible.builtin.systemd:
     name: caddy.service
     enabled: true
-    state: restarted
   become: true

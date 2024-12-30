@@ -4,10 +4,9 @@ caddy_prerequisite_packages:
   - debian-keyring
   - debian-archive-keyring
   - apt-transport-https
-caddy_deb_repo:
-  name: caddy
-  types: deb
-  uris: https://dl.cloudsmith.io/public/caddy/stable/deb/debian
-  suites: any-version
-  components: main
-  signed_by: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
+caddy_deb_repo_name: caddy
+caddy_deb_repo_types: deb
+caddy_deb_repo_uris: https://dl.cloudsmith.io/public/caddy/stable/deb/debian
+caddy_deb_repo_suites: any-version
+caddy_deb_repo_components: main
+caddy_deb_repo_signed_by: https://dl.cloudsmith.io/public/caddy/stable/gpg.key
