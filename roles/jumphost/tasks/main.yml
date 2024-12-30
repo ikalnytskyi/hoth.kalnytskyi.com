@@ -1,0 +1,17 @@
+---
+
+- name: Setup a dedicated user
+  ansible.builtin.user:
+    name: "{{ jumphost_user }}"
+    home: "{{ jumphost_home }}"
+    shell: "{{ jumphost_nologin }}"
+    state: present
+  become: true
+
+- name: Setup an authorized SSH key
+  ansible.posix.authorized_key:
+    user: "{{ jumphost_user }}"
+    key: "{{ item }}"
+    state: present
+  loop: "{{ jumphost_authorized_keys }}"
+  become: true

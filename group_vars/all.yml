@@ -4,6 +4,9 @@ _storage_device_mountpoint: /mnt/data
 
 caddy_email: ihor@kalnytskyi.com
 
+jumphost_authorized_keys:
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEwn8Vak70MKJqJwKofCvWsd7RzeYlL+So3+26u68Izb gh-action@xsnippet-infra
+
 kopia_snapshots:
   - target: "{{ _storage_device_mountpoint }}"
 
