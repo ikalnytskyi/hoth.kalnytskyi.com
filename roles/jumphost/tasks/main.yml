@@ -15,3 +15,17 @@
     state: present
   loop: "{{ jumphost_authorized_keys }}"
   become: true
+
+- name: Setup SSH permissions
+  ansible.builtin.copy:
+    content: |
+      Match User {{ jumphost_user }}
+         PermitTTY no
+         X11Forwarding no
+         PermitTunnel no
+         GatewayPorts no
+         ForceCommand {{ jumphost_nologin }}
+    dest: /etc/ssh/sshd_config.d/20-{{ jumphost_user }}.conf
+    mode: u=rw,g=r,o=r
+  notify: security-systemd-sshd-restart
+  become: true
