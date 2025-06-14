@@ -11,6 +11,12 @@ jumphost_authorized_keys:
 kopia_snapshots:
   - target: "{{ _storage_device_mountpoint }}"
 
+ntfy_domain: ntfy.kalnytskyi.com
+ntfy_smtp_hostname: smtp.eu.mailgun.org
+ntfy_smtp_username: ntfy@m.kalnytskyi.com
+ntfy_smtp_from: ntfy@kalnytskyi.com
+ntfy_webpush_email: ihor@kalnytskyi.com
+
 storage_device: /dev/disk/by-id/scsi-0HC_Volume_101710174
 storage_mountpoints:
   # The block storage device to store the most important data on. Since VMs
@@ -22,12 +28,12 @@ storage_mountpoints:
     options: defaults
     directory_mode: "0700"
 
-  # Vaultwarden is running with sandboxing configured with no access to block
-  # storage device and without any knowledge about it. Let's just make sure
-  # that the directory Vaultwarden stores its state is mounted from the block
-  # storage.
   - what: /mnt/data/vaultwarden
     where: /var/lib/private/vaultwarden
+    options: bind
+
+  - what: /mnt/data/ntfy
+    where: /var/lib/ntfy
     options: bind
 
 vaultwarden_domain: vault.kalnytskyi.com

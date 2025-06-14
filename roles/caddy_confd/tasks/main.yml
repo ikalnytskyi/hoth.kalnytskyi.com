@@ -7,3 +7,11 @@
     mode: u=rw,g=r,o=r
   notify: caddy-restart
   become: true
+
+- name: Render Ntfy configuration for Vaultwarden
+  ansible.builtin.template:
+    src: ntfy.caddy.j2
+    dest: "{{ (caddy_confd_path, 'ntfy.caddy') | path_join }}"
+    mode: u=rw,g=r,o=r
+  notify: caddy-restart
+  become: true

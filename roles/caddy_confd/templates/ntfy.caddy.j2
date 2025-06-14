@@ -1,0 +1,15 @@
+{{ ntfy_domain }} {
+  encode gzip zstd
+  log
+
+  header {
+    Strict-Transport-Security "max-age=31536000"
+    X-Robots-Tag "none"
+  }
+
+  reverse_proxy {{ ntfy_host }}:{{ ntfy_port }} {
+     # Passing correct remote IP address down to Ntfy so the latter can
+     # correctly ban by IP.
+     header_up X-Real-IP {remote_host}
+  }
+}

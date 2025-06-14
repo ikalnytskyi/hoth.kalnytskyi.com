@@ -1,0 +1,48 @@
+---
+
+- name: Add ntfy deb repo
+  ansible.builtin.deb822_repository:
+    name: "{{ ntfy_deb_repo_name }}"
+    types: "{{ ntfy_deb_repo_types }}"
+    uris: "{{ ntfy_deb_repo_uris }}"
+    suites: "{{ ntfy_deb_repo_suites }}"
+    components: "{{ ntfy_deb_repo_components }}"
+    signed_by: "{{ ntfy_deb_repo_signed_by }}"
+  register: ntfy_deb_repo_result
+  become: true
+
+- name: Update apt cache if needed
+  ansible.builtin.apt:
+    update_cache: true
+  when: ntfy_deb_repo_result.changed
+  become: true
+
+- name: Install ntfy
+  ansible.builtin.apt:
+    name: ntfy
+    state: present
+  become: true
+
+- name: Remove ntfy client configuration
+  ansible.builtin.file:
+    dest: /etc/ntfy/client.yml
+    state: absent
+  become: true
+
+- name: Configure ntfy server
+  ansible.builtin.template:
+    src: server.yml.j2
+    dest: /etc/ntfy/server.yml
+    owner: ntfy
+    group: ntfy
+    mode: u=rw,g=r,o=
+  register: ntfy_server_conf_result
+  become: true
+
+- name: Start ntfy now and on every reboot
+  ansible.builtin.systemd:
+    name: ntfy.service
+    enabled: true
+    state: restarted
+    daemon_reload: true
+  become: true

@@ -51,4 +51,7 @@ jobs:
             --extra-vars vaultwarden_yubico_client_id='${{ secrets.VAULTWARDEN_YUBICO_CLIENT_ID }}' \
             --extra-vars vaultwarden_yubico_secret_key='${{ secrets.VAULTWARDEN_YUBICO_SECRET_KEY }}' \
             --extra-vars wireguard_private_key='${{ secrets.WIREGUARD_PRIVATE_KEY }}' \
+            --extra-vars ntfy_smtp_password='${{ secrets.NTFY_SMTP_PASSWORD }}' \
+            --extra-vars ntfy_webpush_key_pub='${{ vars.NTFY_WEBPUSH_KEY_PUB }}' \
+            --extra-vars ntfy_webpush_key='${{ secrets.NTFY_WEBPUSH_KEY }}' \
             site.yml

@@ -1,0 +1,58 @@
+---
+
+argument_specs:
+  main:
+    options:
+      ntfy_domain:
+        type: str
+        required: true
+        description: |
+          The domain to serve requests from.
+      ntfy_host:
+        type: str
+        default: 127.0.0.1
+        description: |
+          The host address to bind Ntfy to.
+      ntfy_port:
+        type: int
+        default: 5000
+        description: |
+          The port to bind Ntfy to.
+      ntfy_smtp_hostname:
+        type: str
+        description: |
+          The hostname of the SMTP server used to additionally send messages as
+          email when the X-Email header is set.
+      ntfy_smtp_username:
+        type: str
+        description: |
+          The username to authenticate with the SMTP server when sending
+          messages as email.|
+      ntfy_smtp_password:
+        type: str
+        description: |
+          The password to authenticate with the SMTP server when sending
+          messages as email.
+      ntfy_smtp_from:
+        type: str
+        description: |
+          The email address to use as the sender (From) when sending messages
+          via the SMTP server.
+      ntfy_webpush_key_pub:
+        type: str
+        description: |
+          The public VAPID key used for Web Push (RFC8030) notifications.
+          Required to authenticate push messages sent from ntfy to browser push
+          services.
+      ntfy_webpush_key:
+        type: str
+        description: |
+          The private VAPID key used for Web Push (RFC8030) notifications. Must
+          be kept secret and used alongside ntfy_webpush_key_pub to sign push
+          messages.
+      ntfy_webpush_email:
+        type: str
+        description: |
+          The contact email address used in the VAPID sub (subject) field,
+          typically identifying the administrator responsible for the push
+          service.

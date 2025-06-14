@@ -1,0 +1,8 @@
+---
+
+ntfy_deb_repo_name: ntfy
+ntfy_deb_repo_types: deb
+ntfy_deb_repo_uris: https://archive.heckel.io/apt
+ntfy_deb_repo_suites: debian
+ntfy_deb_repo_components: main
+ntfy_deb_repo_signed_by: https://archive.heckel.io/apt/pubkey.txt
