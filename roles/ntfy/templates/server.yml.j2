@@ -1,0 +1,25 @@
+attachment-cache-dir: "/var/cache/ntfy/attachments"
+attachment-total-size-limit: "1G"
+auth-default-access: "deny-all"
+auth-file: "/var/lib/ntfy/user.db"
+base-url: "https://{{ ntfy_domain }}"
+behind-proxy: true
+cache-file: "/var/cache/ntfy/cache.db"
+enable-login: true
+listen-http: "{{ ntfy_host }}:{{ ntfy_port }}"
+proxy-forwarded-header: "X-Real-IP"
+upstream-base-url: "https://ntfy.sh"
+
+{% if ntfy_smtp_hostname is defined %}
+smtp-sender-addr: "{{ ntfy_smtp_hostname }}"
+smtp-sender-user: "{{ ntfy_smtp_username }}"
+smtp-sender-pass: "{{ ntfy_smtp_password }}"
+smtp-sender-from: "{{ ntfy_smtp_from }}"
+{% endif %}
+
+{% if ntfy_webpush_key is defined %}
+web-push-public-key: "{{ ntfy_webpush_key_pub }}"
+web-push-private-key: "{{ ntfy_webpush_key }}"
+web-push-email-address: "{{ ntfy_webpush_email }}"
+web-push-file: "/var/cache/ntfy/webpush.db"
+{% endif %}

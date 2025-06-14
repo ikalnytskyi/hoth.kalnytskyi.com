@@ -16,6 +16,13 @@ be available on the provisioner node:
 
 ## Services
 
+### [Ntfy]
+
+ntfy lets you send push notifications to your phone or desktop via scripts from
+any computer, using simple HTTP PUT or POST requests.
+
+[Ntfy]: https://docs.ntfy.sh
+
 ### [Vaultwarden]
 
 Alternative implementation of the Bitwarden server API written in Rust and

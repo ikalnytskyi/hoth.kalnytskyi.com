@@ -9,5 +9,6 @@
     - role: jumphost
     - role: wireguard
     - role: vaultwarden
+    - role: ntfy
     - role: caddy
     - role: caddy_confd
