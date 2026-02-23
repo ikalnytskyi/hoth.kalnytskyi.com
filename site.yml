@@ -5,7 +5,6 @@
   roles:
     - role: hardening
     - role: storage
-    - role: kopia
     - role: jumphost
     - role: wireguard
     - role: vaultwarden
