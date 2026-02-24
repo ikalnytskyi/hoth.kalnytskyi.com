@@ -26,15 +26,6 @@ jobs:
   site:
     runs-on: ubuntu-24.04
 
-    services:
-      webdav:
-        image: bytemark/webdav
-        env:
-          USERNAME: test
-          PASSWORD: test
-        ports:
-          - 8000:80
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -58,21 +49,6 @@ jobs:
           echo "uri=$VOLUME_DEVICE" >> $GITHUB_OUTPUT
         id: volume-device
 
-      - name: Create kopia repository
-        run: |
-          docker run --rm --interactive --network=host --entrypoint=/usr/bin/bash kopia/kopia - <<EOF \
-            | grep "kopia repository connect from-config" \
-            | awk '{print "reconnect-token="$NF}' \
-            >> $GITHUB_OUTPUT
-          export KOPIA_PASSWORD="1234"
-          export KOPIA_WEBDAV_USERNAME="test"
-          export KOPIA_WEBDAV_PASSWORD="test"
-
-          kopia repository create webdav --url=http://127.0.0.1:8000
-          kopia repository status --reconnect-token --reconnect-token-with-password
-          EOF
-        id: kopia-repository
-
       - name: Add server names to /etc/hosts
         run: |
           echo "127.0.0.1 hoth.kalnytskyi.local" | sudo tee -a /etc/hosts
@@ -86,8 +62,8 @@ jobs:
             -vvv \
             --inventory "hoth," \
             --connection local \
+            --extra-vars _storage_device_mountpoint="$RUNNER_TEMP/storage" \
             --extra-vars storage_device='${{ steps.volume-device.outputs.uri }}' \
-            --extra-vars kopia_repository_reconnect_token='${{ steps.kopia-repository.outputs.reconnect-token }}' \
             --extra-vars vaultwarden_domain='vault.kalnytskyi.local' \
             --extra-vars vaultwarden_push_installation_id='id' \
             --extra-vars vaultwarden_push_installation_key='key' \
