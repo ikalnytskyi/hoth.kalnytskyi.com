@@ -6,7 +6,7 @@ caddy_email: ihor@kalnytskyi.com
 
 jumphost_authorized_keys:
   - sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAILHhXRvB2T1K34cdtsxAgbk3TImIag3JJr+zfUN5UZpmAAAABHNzaDo= ikalnytskyi@endor
-  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHAEIxiGb9V0FpO96Rhwdh0og7mLCibKWCc4PFSW9oxM gh-action@xsnippet-infra
+  - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIB64GNnKgg3FKg5Z45imHmymsBgdeXpe3dh9ILOsxTcI provisioner@xsnippet.org
 
 ntfy_domain: ntfy.kalnytskyi.com
 ntfy_smtp_hostname: smtp.eu.mailgun.org
