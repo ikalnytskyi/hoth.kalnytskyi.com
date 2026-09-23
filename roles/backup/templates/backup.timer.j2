@@ -1,0 +1,10 @@
+[Unit]
+Description=Create an encrypted backup daily
+Documentation=https://age-encryption.org/ https://rclone.org/
+
+[Timer]
+OnCalendar={{ backup_on_calendar }}
+Persistent=true
+
+[Install]
+WantedBy=timers.target

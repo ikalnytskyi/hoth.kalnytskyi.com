@@ -1,0 +1,2 @@
+[hoth]
+hoth.local ansible_user=provisioner ansible_ssh_private_key_file=/home/ihor/.ssh/deprecated/id_ed25519

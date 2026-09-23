@@ -1,0 +1,55 @@
+---
+
+argument_specs:
+  main:
+    options:
+      backup_targets:
+        type: list
+        elements: str
+        required: true
+        description: |
+          Absolute directories to back up, with one archive per directory.
+      backup_age_recipient:
+        type: str
+        required: true
+        description: |
+          Public age recipient used to encrypt each archive.
+      backup_on_calendar:
+        type: str
+        default: "*-*-* 03:00:00"
+        description: |
+          Calendar schedule for running backups.
+      backup_retention:
+        type: str
+        default: 7d
+        description: |
+          Maximum age of backup archives kept in WebDAV storage.
+      backup_webdav_url:
+        type: str
+        required: true
+        description: |
+          WebDAV URL of the directory where archives are uploaded.
+      backup_webdav_vendor:
+        type: str
+        default: other
+        choices:
+          - fastmail
+          - nextcloud
+          - owncloud
+          - infinitescale
+          - sharepoint
+          - sharepoint-ntlm
+          - rclone
+          - other
+        description: |
+          WebDAV server type; use other for unlisted servers.
+      backup_webdav_username:
+        type: str
+        required: true
+        description: |
+          Username used to authenticate to the WebDAV server.
+      backup_webdav_password:
+        type: str
+        required: true
+        description: |
+          Password used to authenticate to the WebDAV server.

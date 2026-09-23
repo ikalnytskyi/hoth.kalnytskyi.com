@@ -1,0 +1,72 @@
+---
+
+- name: Install backup tools
+  ansible.builtin.apt:
+    name:
+      - age
+      - rclone
+      - zstd
+    state: present
+  become: true
+
+- name: Obscure WebDAV password for rclone
+  ansible.builtin.command:
+    cmd: rclone obscure -
+    stdin: "{{ backup_webdav_password }}"
+  register: backup_webdav_password_obscured
+  changed_when: false
+  no_log: true
+  become: true
+
+- name: Create WebDAV systemd credentials
+  ansible.builtin.command:
+    cmd: systemd-creds encrypt - /etc/credstore.encrypted/{{ item.key }}
+    stdin: "{{ item.value }}"
+  loop:
+    - key: backup-webdav-username
+      value: "{{ backup_webdav_username }}"
+    - key: backup-webdav-password
+      value: "{{ backup_webdav_password_obscured.stdout }}"
+  changed_when: true
+  no_log: true
+  become: true
+
+- name: Create directory for backup script
+  ansible.builtin.file:
+    path: /usr/local/libexec
+    state: directory
+    owner: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
+  become: true
+
+- name: Install backup script
+  ansible.builtin.template:
+    src: backup.sh.j2
+    dest: /usr/local/libexec/backup
+    owner: root
+    group: root
+    mode: u=rwx,g=,o=
+  become: true
+
+- name: Generate backup systemd service unit
+  ansible.builtin.template:
+    src: backup.service.j2
+    dest: /etc/systemd/system/backup.service
+    mode: u=rw,g=r,o=r
+  become: true
+
+- name: Generate backup systemd timer unit
+  ansible.builtin.template:
+    src: backup.timer.j2
+    dest: /etc/systemd/system/backup.timer
+    mode: u=rw,g=r,o=r
+  become: true
+
+- name: Start backup timer now and on every reboot
+  ansible.builtin.systemd:
+    name: backup.timer
+    enabled: true
+    state: started
+    daemon_reload: true
+  become: true
