@@ -44,6 +44,9 @@ jobs:
             -vv \
             --inventory inventory \
             --private-key '${{ steps.ssh-key.outputs.uri }}' \
+            --extra-vars backup_age_recipient='${{ vars.BACKUP_AGE_RECIPIENT }}' \
+            --extra-vars backup_webdav_username='${{ secrets.BACKUP_WEBDAV_USERNAME }}' \
+            --extra-vars backup_webdav_password='${{ secrets.BACKUP_WEBDAV_PASSWORD }}' \
             --extra-vars vaultwarden_push_installation_id='${{ secrets.VAULTWARDEN_PUSH_INSTALLATION_ID }}' \
             --extra-vars vaultwarden_push_installation_key='${{ secrets.VAULTWARDEN_PUSH_INSTALLATION_KEY }}' \
             --extra-vars vaultwarden_smtp_password='${{ secrets.VAULTWARDEN_SMTP_PASSWORD }}' \

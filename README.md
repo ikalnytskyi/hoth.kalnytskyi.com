@@ -42,3 +42,18 @@ considerably more performant than [OpenVPN].
 
 [Wireguard]: https://www.wireguard.com/
 [OpenVPN]: https://openvpn.net/
+
+## Backups
+
+A systemd timer archives `backup_targets`, compresses them with zstd, encrypts
+them with [age], and uploads them to WebDAV with [rclone]. Restore an archive
+with the private age identity:
+
+```console
+$ age --decrypt --identity backup-key.txt backup.tar.zst.age \
+    | zstd --decompress \
+    | tar --extract
+```
+
+[age]: https://age-encryption.org/
+[rclone]: https://rclone.org/
