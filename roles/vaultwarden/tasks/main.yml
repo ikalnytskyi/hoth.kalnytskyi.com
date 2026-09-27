@@ -6,6 +6,7 @@
     stdin: "{{ item.value }}"
   loop: "{{ vaultwarden_secrets | dict2items }}"
   changed_when: true
+  no_log: true
   become: true
 
 - name: Fetch and unpack Vaultwarden image

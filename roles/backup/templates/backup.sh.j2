@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export RCLONE_CONFIG_BACKUP_USER="$(<"${CREDENTIALS_DIRECTORY}/backup-webdav-username")"
+export RCLONE_CONFIG_BACKUP_PASS="$(<"${CREDENTIALS_DIRECTORY}/backup-webdav-password")"
+
+remote=backup
+recipient={{ backup_age_recipient | quote }}
+retention={{ backup_retention | quote }}
+timestamp="$(date --utc +%Y%m%dT%H%M%SZ)"
+targets=(
+{% for target in backup_targets %}
+    {{ target | quote }}
+{% endfor %}
+)
+
+for target in "${targets[@]}"; do
+    if [[ "${target}" != /* ]]; then
+        echo "backup target is not an absolute path: ${target}" >&2
+        exit 1
+    fi
+
+    if [[ ! -d "${target}" ]]; then
+        echo "backup target is not a directory: ${target}" >&2
+        exit 1
+    fi
+
+    (
+        archive_name="$(systemd-escape --path "${target}")-${timestamp}.tar.zst.age"
+        archive_path="$(mktemp --tmpdir "${archive_name}.XXXXXX")"
+        trap 'rm -f -- "${archive_path}"' EXIT
+
+        tar --directory="${target}" --create --file=- . \
+            | zstd --compress --threads=0 --stdout --quiet \
+            | age --encrypt --recipient "${recipient}" --output "${archive_path}"
+        rclone --config /dev/null copyto "${archive_path}" "${remote}:${archive_name}"
+    )
+done
+
+rclone --config /dev/null delete "${remote}:" \
+    --include '*.tar.zst.age' \
+    --min-age "${retention}"

@@ -2,6 +2,11 @@
 
 _storage_device_mountpoint: /mnt/data
 
+backup_targets:
+  - "{{ _storage_device_mountpoint }}"
+backup_webdav_url: https://myfiles.fastmail.com/backups
+backup_webdav_vendor: fastmail
+
 caddy_email: ihor@kalnytskyi.com
 
 jumphost_authorized_keys:

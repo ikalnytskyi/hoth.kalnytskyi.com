@@ -1,0 +1,51 @@
+[Unit]
+Description=Create and upload an encrypted backup
+Documentation=https://age-encryption.org/ https://rclone.org/
+After=network-online.target
+Wants=network-online.target
+{% for target in backup_targets %}
+RequiresMountsFor={{ target }}
+{% endfor %}
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/backup
+CapabilityBoundingSet=CAP_DAC_READ_SEARCH
+LoadCredentialEncrypted=backup-webdav-username
+LoadCredentialEncrypted=backup-webdav-password
+Environment=RCLONE_CONFIG_BACKUP_TYPE=webdav
+Environment=RCLONE_CONFIG_BACKUP_URL={{ backup_webdav_url }}
+Environment=RCLONE_CONFIG_BACKUP_VENDOR={{ backup_webdav_vendor }}
+Environment=HOME=/tmp
+Environment=XDG_CACHE_HOME=/tmp
+Environment=XDG_CONFIG_HOME=/tmp
+UMask=0077
+TemporaryFileSystem=/:ro
+BindReadOnlyPaths=/usr
+BindReadOnlyPaths=/lib
+BindReadOnlyPaths=-/lib64
+BindReadOnlyPaths=/etc/ssl
+BindReadOnlyPaths=/etc/hosts
+BindReadOnlyPaths=/etc/nsswitch.conf
+BindReadOnlyPaths=/etc/resolv.conf
+{% for target in backup_targets %}
+BindReadOnlyPaths={{ target }}
+{% endfor %}
+LockPersonality=true
+MemoryDenyWriteExecute=true
+NoNewPrivileges=true
+PrivateDevices=true
+PrivateIPC=true
+PrivateTmp=true
+ProcSubset=pid
+ProtectClock=true
+ProtectControlGroups=true
+ProtectHostname=true
+ProtectKernelLogs=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+SystemCallFilter=~@mount

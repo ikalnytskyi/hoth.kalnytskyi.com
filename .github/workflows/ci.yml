@@ -26,6 +26,15 @@ jobs:
   site:
     runs-on: ubuntu-24.04
 
+    services:
+      webdav:
+        image: bytemark/webdav
+        env:
+          USERNAME: test
+          PASSWORD: test
+        ports:
+          - 8000:80
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -37,7 +46,7 @@ jobs:
 
       - name: Install playbook dependencies
         run: |
-          sudo apt install skopeo umoci rsync
+          sudo apt install age skopeo umoci rsync
 
       - name: Create block storage device (volume)
         run: |
@@ -48,6 +57,12 @@ jobs:
           sudo mkfs.ext4 $VOLUME_DEVICE
           echo "uri=$VOLUME_DEVICE" >> $GITHUB_OUTPUT
         id: volume-device
+
+      - name: Create test backup age identity
+        run: |
+          age-keygen --output '${{ runner.temp }}/backup-age-key'
+          echo "recipient=$(age-keygen -y '${{ runner.temp }}/backup-age-key')" >> "$GITHUB_OUTPUT"
+        id: backup-age
 
       - name: Add server names to /etc/hosts
         run: |
@@ -63,6 +78,11 @@ jobs:
             --inventory "hoth," \
             --connection local \
             --extra-vars _storage_device_mountpoint="$RUNNER_TEMP/storage" \
+            --extra-vars backup_age_recipient='${{ steps.backup-age.outputs.recipient }}' \
+            --extra-vars backup_webdav_username=test \
+            --extra-vars backup_webdav_password=test \
+            --extra-vars backup_webdav_url=http://127.0.0.1:8000/ \
+            --extra-vars backup_webdav_vendor=other \
             --extra-vars storage_device='${{ steps.volume-device.outputs.uri }}' \
             --extra-vars vaultwarden_domain='vault.kalnytskyi.local' \
             --extra-vars vaultwarden_push_installation_id='id' \
